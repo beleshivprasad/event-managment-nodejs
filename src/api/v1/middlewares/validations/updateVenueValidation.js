@@ -6,6 +6,9 @@ const responseMessages = require("../../helpers/responseMessages");
 const { logger } = require("../../../../logger/index");
 
 const updateVenueSchema = Joi.object({
+  name: Joi.string().messages({
+    "string.empty": responseMessages.venue.fieldValidation.name.empty
+  }),
   address: Joi.string().messages({
     "string.empty": responseMessages.venue.fieldValidation.address.empty
   }),
@@ -39,17 +42,18 @@ const updateVenueValidation = async (req, res, next) => {
   try {
     const { error } = updateVenueSchema.validate(req.body);
 
-    if (error)
+    if (error) {
       logger.error(error?.details[0]?.message || responseMessages.common.wentWrong, {
         functionName: "updateVenueValidation",
         fileName: __filename
       });
 
-    return errorResponse(
-      res,
-      error?.details[0]?.message || responseMessages.common.wentWrong,
-      error?.details
-    );
+      return errorResponse(
+        res,
+        error?.details[0]?.message || responseMessages.common.wentWrong,
+        error?.details
+      );
+    }
 
     next();
   } catch (error) {

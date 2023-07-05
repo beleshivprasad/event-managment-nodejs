@@ -18,7 +18,11 @@ const createUser = async (req, res) => {
       return successResponse(res, responseMessages.createUser.success, { user: response.user });
     }
 
-    logger.error(response.message, { fileName: __filename, functionName: "createUser" });
+    logger.error(response.message, {
+      fileName: __filename,
+      functionName: "createUser",
+      error: response?.error || {}
+    });
 
     return errorResponse(res, response.message);
   } catch (error) {

@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 
-const venueSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  address: {
+  description: {
+    type: String
+  },
+  status: {
     type: String,
-    required: true
+    enum: ["active", "inactive", "ongoing"],
+    default: "active"
   },
   imageURL: {
     type: String,
@@ -25,24 +29,33 @@ const venueSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  mapImageURL: {
+  date: {
+    type: Date,
+    required: true
+  },
+  startTime: {
     type: String,
     required: true
   },
-  mapImageFileName: {
+  startDateTime: {
+    type: Date,
+    required: true
+  },
+  endTime: {
     type: String,
     required: true
   },
-  mapImageS3BucketName: {
-    type: String,
+  endDateTime: {
+    type: Date,
     required: true
   },
-  mapImageS3Key: {
-    type: String,
+  venueID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Venue",
     required: true
   }
 });
 
-const Venue = mongoose.model("Venue", venueSchema);
+const Event = mongoose.model("Event", eventSchema);
 
-module.exports = Venue;
+module.exports = Event;

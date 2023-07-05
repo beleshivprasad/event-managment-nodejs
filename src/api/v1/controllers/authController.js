@@ -20,7 +20,8 @@ const login = async (req, res) => {
 
     logger.error(response.message, {
       functionName: "login",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     return errorResponse(res, response.message);
@@ -50,7 +51,11 @@ const validateToken = async (req, res) => {
       return successResponse(res, responseMessages.login.token.valid);
     }
 
-    logger.error(response.message, { fileName: __filename, functionName: "validateToken" });
+    logger.error(response.message, {
+      fileName: __filename,
+      functionName: "validateToken",
+      error: response?.error || {}
+    });
 
     return errorResponse(res, response.message, response?.error, response?.statusCode);
   } catch (error) {

@@ -7,6 +7,7 @@ const env = require("./config/env");
 const authRoutes = require("./api/v1/routes/authRoutes");
 const usersRoutes = require("./api/v1/routes/usersRoutes");
 const venueRoutes = require("./api/v1/routes/venueRoutes");
+const eventRoutes = require("./api/v1/routes/eventsRoutes");
 
 // import middlewares
 const authenticate = require("./api/v1/middlewares/authenticate");
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", authenticate, usersRoutes);
 app.use("/api/v1/venues", authenticate, venueRoutes);
+app.use("/api/v1/events", authenticate, eventRoutes);
 
 app.use(unmatchedRouteHandler);
 

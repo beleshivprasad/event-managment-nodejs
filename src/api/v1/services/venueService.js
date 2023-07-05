@@ -4,7 +4,7 @@ const Venue = require("../models/Venue");
 
 const createVenue = async venueDetails => {
   try {
-    let venue = await Venue.find({ address: venueDetails.address });
+    let venue = await Venue.find({ name: venueDetails.name, address: venueDetails.address });
 
     const doesVenueAlreadyExists = Boolean(venue.length);
 
@@ -22,7 +22,7 @@ const createVenue = async venueDetails => {
 
 const getVenues = async (keyword, pageSize = 10, pageNum = 1) => {
   try {
-    const searchOptions = keyword ? { address: { $regex: keyword, $options: "i" } } : {};
+    const searchOptions = keyword ? { name: { $regex: keyword, $options: "i" } } : {};
 
     const skipCount = pageSize * (pageNum - 1);
     const limitCount = pageSize;

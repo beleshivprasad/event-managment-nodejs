@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const env = require("../../../config/env");
 const { logger } = require("../../../logger");
 
+// enable mongoose debug mode
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
+});
+
 const connectDB = async () => {
   if (env.MONGODB_URI) {
     try {

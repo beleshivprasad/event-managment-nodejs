@@ -5,6 +5,10 @@ const responseMessages = require("../../helpers/responseMessages");
 const { logger } = require("../../../../logger");
 
 const venueSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.empty": responseMessages.venue.fieldValidation.name.empty,
+    "any.required": responseMessages.venue.fieldValidation.name.required
+  }),
   address: Joi.string().required().messages({
     "string.empty": responseMessages.venue.fieldValidation.address.empty,
     "any.required": responseMessages.venue.fieldValidation.address.required

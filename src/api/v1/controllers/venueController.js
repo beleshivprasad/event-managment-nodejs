@@ -26,7 +26,8 @@ const createVenue = async (req, res) => {
 
     logger.error(response.message, {
       functionName: "createVenue",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     errorResponse(res, response.message, response.error);
@@ -68,7 +69,8 @@ const updateVenue = async (req, res) => {
 
     logger.error(responseMessages.common.invalidMongoID, {
       functionName: "updateVenue",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     return errorResponse(res, responseMessages.common.invalidMongoID);
@@ -102,7 +104,8 @@ const getVenues = async (req, res) => {
 
     logger.error(response.message, {
       functionName: "getVenues",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     errorResponse(res, response.message, response.error);
@@ -143,7 +146,8 @@ const getSingleVenue = async (req, res) => {
 
     logger.error(responseMessages.common.invalidMongoID, {
       functionName: "getSingleVenue",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     return errorResponse(res, responseMessages.common.invalidMongoID);
@@ -184,7 +188,8 @@ const deleteVenue = async (req, res) => {
 
     logger.error(responseMessages.common.invalidMongoID, {
       functionName: "deleteVenue",
-      fileName: __filename
+      fileName: __filename,
+      error: response?.error || {}
     });
 
     return errorResponse(res, responseMessages.common.invalidMongoID);

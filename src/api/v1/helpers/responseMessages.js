@@ -24,15 +24,61 @@ module.exports = {
     alreadyExists: "User already exists!"
   },
   event: {
+    common: {
+      requiredVenueID: "Required event id!",
+      doesNotExists: "Event does not exists!"
+    },
     create: {
       success: "Event added successfully!",
       failed: "Failed to add event!",
-      timeSlotNotAvailable: "Event already exists in this time slot at selected location!"
+      timeSlotNotAvailable: "Event already exists in this time slot at selected location!",
+      endTimeBeforeStartTime: "Event end-time must be after the start-time!",
+      eventEndTimeAndStartTimeSame: "Event start-time cannot be same as end-time!"
     },
     fetch: {
       success: "Event fetched successfully!",
-      failed: "Couldn't fetch events",
-      requiredVenueID: "Required event id!"
+      failed: "Couldn't fetch event"
+    },
+    update: {
+      success: "Event updated successfully!",
+      failed: "Couldn't update event"
+    },
+    delete: {
+      success: "Event deleted successfully!",
+      failed: "Couldn't delete event",
+      backDated: "Cannot delete past or ongoing events!"
+    },
+    fieldValidation: {
+      name: {
+        empty: "Event name cannot be empty!",
+        required: "Event name is required!"
+      },
+      status: {
+        invalid: "Invalid event status( allowed only active,inactive)"
+      },
+      imageURL: {
+        empty: "Event image is required!",
+        required: "Event image is required!"
+      },
+      date: {
+        base: "Invalid event date format! (YYYY-MM-DD)",
+        empty: "Event date cannot be empty!",
+        required: "Event date is required!",
+        backDate: "Event date must be in the future"
+      },
+      startTime: {
+        empty: "Event start-time cannot be empty!",
+        required: "Event start-time is required!",
+        alreadyElasped: "Event date and time must be in the future"
+      },
+      endTime: {
+        empty: "Event end-time cannot be empty!",
+        required: "Event end-time is required!"
+      },
+      venueID: {
+        empty: "Venue cannot be empty!",
+        required: "Venue is required!"
+      }
     }
   },
   venue: {
@@ -57,6 +103,10 @@ module.exports = {
       doesNotExists: "Venue does not exists!"
     },
     fieldValidation: {
+      name: {
+        empty: "Venue name cannot be empty!",
+        required: "Venue name is required!"
+      },
       address: {
         empty: "Venue address name cannot be empty!",
         required: "Venue address name is required!"
