@@ -10,7 +10,7 @@ const verifyToken = async token => {
 
     return {
       success: true,
-      data: user
+      data: { user }
     };
   } catch (error) {
     logger.error(error.message, { fileName: __filename, functionName: "verifyToken", error });

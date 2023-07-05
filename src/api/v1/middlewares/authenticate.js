@@ -19,7 +19,8 @@ const authenticate = async (req, res, next) => {
           functionName: "authenticate"
         });
 
-        req.user = user;
+        req.user = response.data.user;
+
         next();
       } else {
         logger.error(response?.message || responseMessages.login.token.invalid, {

@@ -26,4 +26,12 @@ const connectDB = async () => {
   }
 };
 
-module.exports = { connectDB };
+const isValidMongoID = id => {
+  try {
+    return mongoose.Types.ObjectId.isValid(id);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = { connectDB, isValidMongoID };
