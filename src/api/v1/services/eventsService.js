@@ -1,7 +1,11 @@
-const responseMessages = require("../helpers/responseMessages");
+const EventRepository = require("../repositories/eventRepository");
+const VenueRepository = require("../repositories/venueRepository");
 
-const Event = require("../models/Event");
-const Venue = require("../models/Venue");
+const responseMessages = require("../helpers/responseMessages");
+const { DONE, ONGOING } = require("../../../config/constants");
+
+const eventRepository = new EventRepository();
+const venueRepository = new VenueRepository();
 
 const createEvent = async eventDetails => {
   try {
@@ -39,7 +43,7 @@ const createEvent = async eventDetails => {
     // create event
     const createEventPayload = { ...eventDetails, startDateTime, endDateTime };
 
-    const event = await Event.create(createEventPayload);
+    const event = eventRepository.createEvent(createEventPayload);
 
     return { success: true, message: responseMessages.event.create.success, data: { event } };
   } catch (error) {
@@ -49,7 +53,7 @@ const createEvent = async eventDetails => {
 
 const updateEvent = async (eventID, eventDetails) => {
   try {
-    let event = await Event.findById(eventID);
+    let event = await eventRepository.findEventById(eventID);
 
     if (!event) {
       return { success: false, message: responseMessages.event.common.doesNotExists };
@@ -91,7 +95,7 @@ const updateEvent = async (eventID, eventDetails) => {
 
     const updateEventPayload = { ...eventDetailsPayload, startDateTime, endDateTime };
 
-    event = await Event.updateOne({ _id: eventID }, updateEventPayload);
+    event = await eventRepository.updateEvent(eventID, updateEventPayload);
 
     return { success: true, message: responseMessages.event.update.success, data: { event } };
   } catch (error) {
@@ -101,17 +105,20 @@ const updateEvent = async (eventID, eventDetails) => {
 
 const getEvents = async (searchKey, pageSize = 10, pageNum = 1) => {
   try {
-    const searchOptions = searchKey ? { name: { $regex: searchKey, $options: "i" } } : {};
+    const filterOptions = searchKey ? { name: { $regex: searchKey, $options: "i" } } : {};
+    const populateOptions = { path: "venueID", select: "address", strictPopulate: false };
 
     const skipCount = pageSize * (pageNum - 1);
     const limitCount = pageSize;
 
-    const events = await Event.find(searchOptions)
-      .skip(skipCount)
-      .limit(limitCount)
-      .populate({ path: "venueID", select: "address", strictPopulate: false });
+    const events = await eventRepository.getPaginatedEvents(
+      filterOptions,
+      skipCount,
+      limitCount,
+      populateOptions
+    );
 
-    const totalCount = await Event.count();
+    const totalCount = await eventRepository.totalEventRecords();
 
     const eventsWithStatus = await Promise.all(
       events.map(async event => {
@@ -140,7 +147,7 @@ const getEvents = async (searchKey, pageSize = 10, pageNum = 1) => {
 
 const getSingleEvent = async eventID => {
   try {
-    const event = await Event.findById(eventID);
+    const event = await eventRepository.findEventById(eventID);
 
     if (!event) {
       return { success: false, message: responseMessages.event.common.doesNotExists };
@@ -148,7 +155,7 @@ const getSingleEvent = async eventID => {
 
     const status = await getEventStatus(event);
 
-    const venue = await Venue.findById(event.venueID);
+    const venue = await venueRepository.findVenueById(event.venueID);
 
     return {
       success: true,
@@ -165,25 +172,22 @@ const getSingleEvent = async eventID => {
 const deleteEvent = async eventID => {
   try {
     // validate if event exists
-    const event = await Event.findById(eventID);
+    const event = await eventRepository.findEventById(eventID);
 
     if (!event) {
       return { success: false, message: responseMessages.event.common.doesNotExists };
     }
 
-    // validate if event is back dated
+    // validate if event is back dated or status is "done"
     const currentDateTime = new Date();
     const startDateTime = getStartDateTime(event.date, event.startTime);
     const endDateTime = getEndDateTime(event.date, event.endTime);
 
-    if (
-      currentDateTime > endDateTime ||
-      (currentDateTime >= startDateTime && currentDateTime < endDateTime)
-    ) {
+    if (isEventBackDated(currentDateTime, startDateTime, endDateTime, event)) {
       return { success: false, message: responseMessages.event.delete.backDated };
     }
 
-    await Event.deleteOne({ _id: eventID });
+    await eventRepository.deleteEventById(eventID);
 
     return {
       success: true,
@@ -198,23 +202,39 @@ const deleteEvent = async eventID => {
 module.exports = { createEvent, getEvents, getSingleEvent, updateEvent, deleteEvent };
 
 // private methods
+const isEventDone = event => event.status === DONE;
+
+const isTimeBetween = (startDateTime, endDateTime, currentDateTime) => {
+  return currentDateTime >= startDateTime && currentDateTime < endDateTime;
+};
+
+const isEventBackDated = (currentDateTime, startDateTime, endDateTime, event) => {
+  return currentDateTime > startDateTime || isEventDone(event);
+};
 
 const getEventStatus = async event => {
-  try {
-    const startDateTime = getStartDateTime(event.date, event.startTime);
-    const endDateTime = getEndDateTime(event.date, event.endTime);
+  const startDateTime = getStartDateTime(event.date, event.startTime);
+  const endDateTime = getEndDateTime(event.date, event.endTime);
 
-    const currentDateTime = new Date();
+  const currentDateTime = new Date();
 
-    if (currentDateTime >= startDateTime && currentDateTime < endDateTime) {
-      await Event.updateOne({ _id: event._id }, { status: "ongoing" });
+  // set status to "ongoing" if current time is in between event start and end time.
+  if (isTimeBetween(startDateTime, endDateTime, currentDateTime)) {
+    await eventRepository.updateEvent(event._id, { status: ONGOING });
 
-      return "ongoing";
-    }
+    return ONGOING;
+  }
 
-    return event.status;
-  } catch (error) {}
+  // set status to "done" if current time is in between event start and end time.
+  if (currentDateTime > endDateTime) {
+    await eventRepository.updateEvent(event._id, { status: DONE });
+
+    return DONE;
+  }
+
+  return event.status;
 };
+
 const getStartDateTime = (startDate, startTime) => {
   const { year, month, day } = getYearMonthDayForDate(startDate);
 
@@ -271,7 +291,7 @@ const validateDateTime = (startDateTime, endDateTime) => {
 
 const verifyEventNotExists = async (eventDetails, startDateTime, endDateTime, eventID) => {
   // check if event is alreay exists at same date within range of given start and end time.
-  const events = await Event.find({
+  const events = await eventRepository.findEvents({
     name: eventDetails.name,
     date: eventDetails.date,
     venueID: eventDetails.venueID,
@@ -300,7 +320,7 @@ const verifyEventNotExists = async (eventDetails, startDateTime, endDateTime, ev
 
 const doesVenueExists = async venueID => {
   try {
-    const venue = await Venue.findOne({ _id: venueID });
+    const venue = await venueRepository.findVenueById(venueID);
 
     if (!venue) return { success: false, message: responseMessages.venue.fetch.doesNotExists };
 

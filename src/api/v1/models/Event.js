@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { EVENT_STATUSES, ACTIVE } = require("../../../config/constants");
+
 const eventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -10,8 +12,8 @@ const eventSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "inactive", "ongoing"],
-    default: "active"
+    enum: EVENT_STATUSES,
+    default: ACTIVE
   },
   imageURL: {
     type: String,
