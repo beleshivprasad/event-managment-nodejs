@@ -19,6 +19,7 @@ class EventRepository {
 
   async getPaginatedEvents(filterOptions, skipCount = 0, limitCount = 10, populateOptions) {
     return await Event.find(filterOptions)
+      .sort({ startDateTime: 1 })
       .skip(skipCount)
       .limit(limitCount)
       .populate(populateOptions);

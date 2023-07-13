@@ -8,6 +8,7 @@ const authRoutes = require("./api/v1/routes/authRoutes");
 const usersRoutes = require("./api/v1/routes/usersRoutes");
 const venueRoutes = require("./api/v1/routes/venueRoutes");
 const eventRoutes = require("./api/v1/routes/eventsRoutes");
+const newsTickerRoutes = require("./api/v1/routes/newsTickerRoutes");
 
 // import middlewares
 const authenticate = require("./api/v1/middlewares/authenticate");
@@ -34,6 +35,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", authenticate, usersRoutes);
 app.use("/api/v1/venues", authenticate, venueRoutes);
 app.use("/api/v1/events", authenticate, eventRoutes);
+app.use("/api/v1/news_ticker", authenticate, newsTickerRoutes);
 
 app.use(unmatchedRouteHandler);
 

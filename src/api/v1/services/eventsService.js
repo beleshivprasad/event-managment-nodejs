@@ -61,14 +61,18 @@ const updateEvent = async (eventID, eventDetails) => {
 
     let eventDetailsPayload = { ...event.toObject(), ...eventDetails };
 
-    // validate event start and end time
     const startDateTime = getStartDateTime(eventDetailsPayload.date, eventDetailsPayload.startTime);
     const endDateTime = getEndDateTime(eventDetailsPayload.date, eventDetailsPayload.endTime);
 
-    const validateDateTimeResp = validateDateTime(startDateTime, endDateTime);
+    // only validate event date and time if they are changed.
+    if (shouldValidateEventsTime(event, eventDetails)) {
+      // validate event start and end time
 
-    if (!validateDateTimeResp.success) {
-      return { success: validateDateTimeResp.success, message: validateDateTimeResp.message };
+      const validateDateTimeResp = validateDateTime(startDateTime, endDateTime, event);
+
+      if (!validateDateTimeResp.success) {
+        return { success: validateDateTimeResp.success, message: validateDateTimeResp.message };
+      }
     }
 
     // validate if event not exists
@@ -161,7 +165,7 @@ const getSingleEvent = async eventID => {
       success: true,
       message: responseMessages.event.fetch.success,
       data: {
-        event: { ...event.toObject(), status, venueDetails: { ...venue.toObject() } }
+        event: { ...event.toObject(), status, venueDetails: venue ? { ...venue.toObject() } : {} }
       }
     };
   } catch (error) {
@@ -203,6 +207,11 @@ module.exports = { createEvent, getEvents, getSingleEvent, updateEvent, deleteEv
 
 // private methods
 const isEventDone = event => event.status === DONE;
+
+// check if event start and end time are changed
+const shouldValidateEventsTime = (event, eventDetails) => {
+  return event.startTime !== eventDetails.startTime || event.endTime !== eventDetails.endTime;
+};
 
 const isTimeBetween = (startDateTime, endDateTime, currentDateTime) => {
   return currentDateTime >= startDateTime && currentDateTime < endDateTime;
@@ -261,11 +270,11 @@ const getYearMonthDayForDate = date => {
   return { year, month, day };
 };
 
-const validateDateTime = (startDateTime, endDateTime) => {
+const validateDateTime = (startDateTime, endDateTime, event) => {
   const isEventEndTimeBeforeStartTime = !(endDateTime - startDateTime > 0);
   const currentDateTime = new Date();
 
-  // validate event should not be in back date or elapsed time.
+  // validate: event should not be in back date or elapsed time.
   if (startDateTime < currentDateTime) {
     return {
       success: false,

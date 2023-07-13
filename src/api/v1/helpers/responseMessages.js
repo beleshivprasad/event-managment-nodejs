@@ -121,6 +121,26 @@ module.exports = {
       }
     }
   },
+  newsTicker: {
+    create: {
+      success: "News ticker text created successfully!",
+      failure: "Failed to created the news ticker text!"
+    },
+    fetch: {
+      success: "News ticker text fetched successfully!",
+      failure: "Failed to fetch the news ticker text!"
+    },
+    update: {
+      success: "News ticker updated successfully!",
+      failure: "Failed to update the news ticker text!"
+    },
+    fieldValidation: {
+      text: {
+        base: "News ticker must be a string",
+        required: "News ticker text cannot be empty!"
+      }
+    }
+  },
   fieldValidation: {
     name: {
       base: "Name must be a string!",
