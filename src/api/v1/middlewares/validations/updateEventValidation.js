@@ -4,15 +4,17 @@ const joiDate = require("@joi/date");
 const Joi = coreJoi.extend(joiDate);
 
 const { errorResponse } = require("../../helpers/responseHandlers");
-
 const responseMessages = require("../../helpers/responseMessages");
+const { errorLog } = require("../../helpers/loggerHelper");
+
+const { ACTIVE, INACTIVE } = require("../../../../config/constants");
 
 const eventSchema = Joi.object({
   name: Joi.string().messages({
     "string.empty": responseMessages.event.fieldValidation.name.empty
   }),
   description: Joi.any(),
-  status: Joi.string().valid("active", "inactive").messages({
+  status: Joi.string().valid(ACTIVE, INACTIVE).messages({
     "any.only": responseMessages.event.fieldValidation.status.invalid
   }),
   imageURL: Joi.string().messages({
@@ -47,10 +49,7 @@ const updateEventValidation = async (req, res, next) => {
     const { error } = eventSchema.validate(req.body);
 
     if (error) {
-      logger.error(error?.details[0]?.message || responseMessages.common.wentWrong, {
-        functionName: "updateEventValidation",
-        fileName: __filename
-      });
+      errorLog(error?.details[0]?.message, "updateEventValidation", __filename);
 
       return errorResponse(
         res,
@@ -61,11 +60,7 @@ const updateEventValidation = async (req, res, next) => {
 
     next();
   } catch (error) {
-    logger.error(error.message, {
-      functionName: "updateEventValidation",
-      fileName: __filename,
-      error
-    });
+    errorLog(error.message, "updateEventValidation", __filename, error);
 
     return errorResponse(res, error?.message || responseMessages.common.wentWrong, error);
   }
