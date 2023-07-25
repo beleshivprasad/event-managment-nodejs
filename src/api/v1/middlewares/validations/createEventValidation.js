@@ -14,6 +14,9 @@ const eventSchema = Joi.object({
     "any.required": responseMessages.event.fieldValidation.name.required
   }),
   description: Joi.any(),
+  status: Joi.string().valid(ACTIVE, INACTIVE).messages({
+    "any.only": responseMessages.event.fieldValidation.status.invalid
+  }),
   imageURL: Joi.string().required().messages({
     "string.empty": responseMessages.event.fieldValidation.imageURL.empty,
     "any.required": responseMessages.event.fieldValidation.imageURL.required
