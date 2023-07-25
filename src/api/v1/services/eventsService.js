@@ -2,7 +2,9 @@ const EventRepository = require("../repositories/eventRepository");
 const VenueRepository = require("../repositories/venueRepository");
 
 const responseMessages = require("../helpers/responseMessages");
+const { convertDateToTimeZone } = require("../helpers/datetime");
 const { DONE, ONGOING, NON_EDITABLE_STATUS, INACTIVE } = require("../../../config/constants");
+const env = require("../../../config/env");
 
 const eventRepository = new EventRepository();
 const venueRepository = new VenueRepository();
@@ -190,7 +192,7 @@ const deleteEvent = async eventID => {
     }
 
     // validate if event is back dated or status is "done"
-    const currentDateTime = new Date();
+    const currentDateTime = getCurrentDateTime();
     const startDateTime = getStartDateTime(event.date, event.startTime);
     const endDateTime = getEndDateTime(event.date, event.endTime);
 
@@ -236,8 +238,7 @@ const getEventStatus = async event => {
   const startDateTime = getStartDateTime(event.date, event.startTime);
   const endDateTime = getEndDateTime(event.date, event.endTime);
 
-  const currentDateTime = new Date();
-  currentDateTime.setSeconds(0);
+  const currentDateTime = getCurrentDateTime();
 
   // set status to "ongoing" if current time is in between event start and end time.
   if (isTimeBetween(startDateTime, endDateTime, currentDateTime) && event.status !== INACTIVE) {
@@ -272,6 +273,13 @@ const getEndDateTime = (endDate, endTime) => {
   return new Date(year, month, day, endTimeHour, endTimeMiniutes);
 };
 
+const getCurrentDateTime = () => {
+  const currentDateTime = convertDateToTimeZone(new Date(), env.APP_TIME_ZONE);
+  currentDateTime.setSeconds(0);
+
+  return currentDateTime;
+};
+
 const getYearMonthDayForDate = date => {
   const dateObj = new Date(date);
 
@@ -284,7 +292,7 @@ const getYearMonthDayForDate = date => {
 
 const validateDateTime = (startDateTime, endDateTime, event) => {
   const isEventEndTimeBeforeStartTime = !(endDateTime - startDateTime > 0);
-  const currentDateTime = new Date();
+  const currentDateTime = getCurrentDateTime();
 
   // validate: event should not be in back date or elapsed time.
   if (startDateTime < currentDateTime) {

@@ -10,5 +10,6 @@ module.exports = {
   CLIENT_BASE_URL: process.env.CLIENT_BASE_URL || "http://localhost:3000",
   JWT_SIGN_OPTIONS: {
     expiresIn: process.env.JWT_TOKEN_EXPIRE_DURATION || "3d"
-  }
+  },
+  APP_TIME_ZONE: process.env.APP_TIME_ZONE || "Asia/Kolkata"
 };
