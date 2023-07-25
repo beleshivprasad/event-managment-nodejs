@@ -54,7 +54,8 @@ module.exports = {
         required: "Event name is required!"
       },
       status: {
-        invalid: "Invalid event status( allowed only active,inactive)"
+        invalid: "Invalid event status( allowed only active,inactive)",
+        editNotAllowed: "Cannot edit past or ongoing events!"
       },
       imageURL: {
         empty: "Event image is required!",

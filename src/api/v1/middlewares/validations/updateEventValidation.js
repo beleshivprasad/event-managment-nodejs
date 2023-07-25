@@ -7,14 +7,14 @@ const { errorResponse } = require("../../helpers/responseHandlers");
 const responseMessages = require("../../helpers/responseMessages");
 const { errorLog } = require("../../helpers/loggerHelper");
 
-const { ACTIVE, INACTIVE } = require("../../../../config/constants");
+const { ACTIVE, INACTIVE, ONGOING, DONE } = require("../../../../config/constants");
 
 const eventSchema = Joi.object({
   name: Joi.string().messages({
     "string.empty": responseMessages.event.fieldValidation.name.empty
   }),
   description: Joi.any(),
-  status: Joi.string().valid(ACTIVE, INACTIVE).messages({
+  status: Joi.string().valid(ACTIVE, INACTIVE, ONGOING, DONE).messages({
     "any.only": responseMessages.event.fieldValidation.status.invalid
   }),
   imageURL: Joi.string().messages({

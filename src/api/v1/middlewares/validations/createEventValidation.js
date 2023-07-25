@@ -5,7 +5,7 @@ const Joi = coreJoi.extend(joiDate);
 
 const { errorResponse } = require("../../helpers/responseHandlers");
 const responseMessages = require("../../helpers/responseMessages");
-const { ACTIVE, INACTIVE } = require("../../../../config/constants");
+const { ACTIVE, INACTIVE, ONGOING, DONE } = require("../../../../config/constants");
 const { logger } = require("../../../../logger");
 
 const eventSchema = Joi.object({
@@ -14,7 +14,7 @@ const eventSchema = Joi.object({
     "any.required": responseMessages.event.fieldValidation.name.required
   }),
   description: Joi.any(),
-  status: Joi.string().valid(ACTIVE, INACTIVE).messages({
+  status: Joi.string().valid(ACTIVE, INACTIVE, ONGOING, DONE).messages({
     "any.only": responseMessages.event.fieldValidation.status.invalid
   }),
   imageURL: Joi.string().required().messages({

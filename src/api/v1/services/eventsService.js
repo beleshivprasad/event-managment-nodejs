@@ -2,7 +2,7 @@ const EventRepository = require("../repositories/eventRepository");
 const VenueRepository = require("../repositories/venueRepository");
 
 const responseMessages = require("../helpers/responseMessages");
-const { DONE, ONGOING } = require("../../../config/constants");
+const { DONE, ONGOING, NON_EDITABLE_STATUS, INACTIVE } = require("../../../config/constants");
 
 const eventRepository = new EventRepository();
 const venueRepository = new VenueRepository();
@@ -59,15 +59,22 @@ const updateEvent = async (eventID, eventDetails) => {
       return { success: false, message: responseMessages.event.common.doesNotExists };
     }
 
+    // validate if event is editable based on status
+    if (isEventNonEditable(event)) {
+      return {
+        success: false,
+        message: responseMessages.event.fieldValidation.status.editNotAllowed
+      };
+    }
+
     let eventDetailsPayload = { ...event.toObject(), ...eventDetails };
 
     const startDateTime = getStartDateTime(eventDetailsPayload.date, eventDetailsPayload.startTime);
     const endDateTime = getEndDateTime(eventDetailsPayload.date, eventDetailsPayload.endTime);
 
-    // only validate event date and time if they are changed.
+    // validate event date and time only if they are changed.
     if (shouldValidateEventsTime(event, eventDetails)) {
       // validate event start and end time
-
       const validateDateTimeResp = validateDateTime(startDateTime, endDateTime, event);
 
       if (!validateDateTimeResp.success) {
@@ -206,7 +213,7 @@ const deleteEvent = async eventID => {
 module.exports = { createEvent, getEvents, getSingleEvent, updateEvent, deleteEvent };
 
 // private methods
-const isEventDone = event => event.status === DONE;
+const isEventNonEditable = event => NON_EDITABLE_STATUS.includes(event.status);
 
 // check if event start and end time are changed
 const shouldValidateEventsTime = (event, eventDetails) => {
@@ -218,11 +225,11 @@ const shouldValidateEventsTime = (event, eventDetails) => {
 };
 
 const isTimeBetween = (startDateTime, endDateTime, currentDateTime) => {
-  return currentDateTime >= startDateTime && currentDateTime < endDateTime;
+  return currentDateTime >= startDateTime && currentDateTime <= endDateTime;
 };
 
 const isEventBackDated = (currentDateTime, startDateTime, endDateTime, event) => {
-  return currentDateTime > startDateTime || isEventDone(event);
+  return currentDateTime > startDateTime || isEventNonEditable(event);
 };
 
 const getEventStatus = async event => {
@@ -230,16 +237,17 @@ const getEventStatus = async event => {
   const endDateTime = getEndDateTime(event.date, event.endTime);
 
   const currentDateTime = new Date();
+  currentDateTime.setSeconds(0);
 
   // set status to "ongoing" if current time is in between event start and end time.
-  if (isTimeBetween(startDateTime, endDateTime, currentDateTime)) {
+  if (isTimeBetween(startDateTime, endDateTime, currentDateTime) && event.status !== INACTIVE) {
     await eventRepository.updateEvent(event._id, { status: ONGOING });
 
     return ONGOING;
   }
 
   // set status to "done" if current time is in between event start and end time.
-  if (currentDateTime > endDateTime) {
+  if (currentDateTime > endDateTime && event.status !== INACTIVE) {
     await eventRepository.updateEvent(event._id, { status: DONE });
 
     return DONE;
