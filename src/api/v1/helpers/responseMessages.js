@@ -121,6 +121,67 @@ module.exports = {
       }
     }
   },
+  siteUsers: {
+    create: {
+      success: "User record added successfully",
+      error: "Failed to add user record!"
+    },
+    fetch: {
+      success: "User fetched.",
+      error: "Failed to fetch users!.",
+      single: {
+        success: "User found.",
+        error: "User not found."
+      }
+    },
+    fieldValidation: {
+      common: {
+        invalid: "Invalid input value provided!"
+      },
+      firstName: {
+        base: "First Name must be a string!",
+        empty: "First Name cannot be empty",
+        required: "First Name is required!"
+      },
+      lastName: {
+        base: "Last Name must be a string!",
+        empty: "Last Name cannot be empty",
+        required: "Last Name is required!"
+      },
+      name: {
+        base: "Name must be a string!",
+        empty: "Name cannot be empty",
+        required: "Name is required!"
+      },
+      email: {
+        base: "Email must be a string!",
+        empty: "Email cannot be empty",
+        required: "Email is required!"
+      },
+      phoneNumber: {
+        empty: "Phone Number cannot be empty",
+        required: "Phone Number is required!"
+      },
+      zipCode: {
+        empty: "Zip Code cannot be empty",
+        required: "Zip Code is required!"
+      },
+      userType: {
+        base: "User Type must be a string!",
+        empty: "User Type cannot be empty!",
+        required: "User Type is required!",
+        invalid: "Invalid user type provided!"
+      },
+      ip: {
+        empty: "IP address cannot be empty",
+        required: "IP address is required!"
+      },
+      image: {
+        empty: "Event image is required!",
+        required: "Event image is required!"
+      }
+    }
+  },
   newsTicker: {
     create: {
       success: "News ticker text created successfully!",
