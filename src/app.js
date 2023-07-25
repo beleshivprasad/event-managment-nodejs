@@ -19,6 +19,9 @@ const unmatchedRouteHandler = require("./api/v1/helpers/unmatchedRouteHandler");
 // creating application instance
 const app = express();
 
+//creating router instance
+const router = express.Router();
+
 // set-up cors
 app.use(cors({ origin: env.CLIENT_BASE_URL }));
 
@@ -31,12 +34,16 @@ connectDB();
 app.use(express.json());
 
 // routes
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/users", authenticate, usersRoutes);
-app.use("/api/v1/venues", authenticate, venueRoutes);
-app.use("/api/v1/events", authenticate, eventRoutes);
-app.use("/api/v1/news_ticker", authenticate, newsTickerRoutes);
+router.use("/auth", authRoutes);
+router.use("/users", authenticate, usersRoutes);
+router.use("/venues", authenticate, venueRoutes);
+router.use("/events", authenticate, eventRoutes);
+router.use("/news_ticker", authenticate, newsTickerRoutes);
 
+// base router for apis
+app.use("/adminapi/api/v1", router);
+
+// handle unmatch route with error
 app.use(unmatchedRouteHandler);
 
 app.listen(env.PORT, () => {

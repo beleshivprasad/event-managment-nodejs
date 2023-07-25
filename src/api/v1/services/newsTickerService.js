@@ -13,10 +13,10 @@ const createNewsTickerText = async text => {
      * adding logger in only this method because there no controller method for creation of news ticker
      * so there no other place to keep log of news ticker creation than this.
      */
+
     logger.info(responseMessages.newsTicker.create.success, {
       fileName: __filename,
-      functionName: "createNewsTickerText",
-      error
+      functionName: "createNewsTickerText"
     });
 
     return {
