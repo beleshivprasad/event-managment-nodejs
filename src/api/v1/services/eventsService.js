@@ -210,7 +210,11 @@ const isEventDone = event => event.status === DONE;
 
 // check if event start and end time are changed
 const shouldValidateEventsTime = (event, eventDetails) => {
-  return event.startTime !== eventDetails.startTime || event.endTime !== eventDetails.endTime;
+  return (
+    event.startTime !== eventDetails.startTime ||
+    event.endTime !== eventDetails.endTime ||
+    event.date.toDateString() !== new Date(eventDetails.date).toDateString()
+  );
 };
 
 const isTimeBetween = (startDateTime, endDateTime, currentDateTime) => {
