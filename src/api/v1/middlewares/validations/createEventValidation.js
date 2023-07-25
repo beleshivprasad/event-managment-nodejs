@@ -4,8 +4,8 @@ const joiDate = require("@joi/date");
 const Joi = coreJoi.extend(joiDate);
 
 const { errorResponse } = require("../../helpers/responseHandlers");
-
 const responseMessages = require("../../helpers/responseMessages");
+const { ACTIVE, INACTIVE } = require("../../../../config/constants");
 const { logger } = require("../../../../logger");
 
 const eventSchema = Joi.object({
