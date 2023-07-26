@@ -119,7 +119,7 @@ const updateEvent = async (eventID, eventDetails) => {
 const getEvents = async (searchKey, pageSize = 10, pageNum = 1) => {
   try {
     const filterOptions = searchKey ? { name: { $regex: searchKey, $options: "i" } } : {};
-    const populateOptions = { path: "venueID", select: "address", strictPopulate: false };
+    const populateOptions = { path: "venueID", select: "name", strictPopulate: false };
 
     const skipCount = pageSize * (pageNum - 1);
     const limitCount = pageSize;
