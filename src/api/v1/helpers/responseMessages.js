@@ -167,6 +167,10 @@ module.exports = {
         empty: "Zip Code cannot be empty",
         required: "Zip Code is required!"
       },
+      prudentialMarketingAccepted: {
+        empty: "Prudential Marketing cannot be empty",
+        required: "Prudential Marketing is required!"
+      },
       userType: {
         base: "User Type must be a string!",
         empty: "User Type cannot be empty!",

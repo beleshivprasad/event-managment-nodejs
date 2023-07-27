@@ -25,6 +25,10 @@ const selfieSiteUserSchema = Joi.object({
     "string.empty": responseMessages.siteUsers.fieldValidation.zipCode.empty,
     "any.required": responseMessages.siteUsers.fieldValidation.zipCode.required
   }),
+  prudentialMarketingAccepted: Joi.boolean().required().messages({
+    "string.empty": responseMessages.siteUsers.fieldValidation.prudentialMarketingAccepted.empty,
+    "any.required": responseMessages.siteUsers.fieldValidation.prudentialMarketingAccepted.required
+  }),
   imageURL: Joi.string().required().messages({
     "string.empty": responseMessages.siteUsers.fieldValidation.image.empty,
     "any.required": responseMessages.event.fieldValidation.imageURL.required

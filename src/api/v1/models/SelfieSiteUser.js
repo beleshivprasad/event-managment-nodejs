@@ -18,6 +18,10 @@ const selfieSiteUserSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    prudentialMarketingAccepted: {
+      type: Boolean,
+      required: true
+    },
     imageURL: {
       type: String,
       required: true
