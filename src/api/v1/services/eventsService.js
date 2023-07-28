@@ -45,7 +45,7 @@ const createEvent = async eventDetails => {
     // create event
     const createEventPayload = { ...eventDetails, startDateTime, endDateTime };
 
-    const event = eventRepository.createEvent(createEventPayload);
+    const event = await eventRepository.createEvent(createEventPayload);
 
     return { success: true, message: responseMessages.event.create.success, data: { event } };
   } catch (error) {
@@ -116,9 +116,14 @@ const updateEvent = async (eventID, eventDetails) => {
   }
 };
 
-const getEvents = async (searchKey, pageSize = 10, pageNum = 1) => {
+const getEvents = async (searchKey, pageSize = 10, pageNum = 1, date) => {
   try {
-    const filterOptions = searchKey ? { name: { $regex: searchKey, $options: "i" } } : {};
+    const filterOptions = {
+      ...(searchKey && {
+        name: { $regex: searchKey, $options: "i" }
+      }),
+      ...(date && { date: getISOString(new Date(date)) })
+    };
     const populateOptions = { path: "venueID", select: "name", strictPopulate: false };
 
     const skipCount = pageSize * (pageNum - 1);
@@ -233,6 +238,8 @@ const isTimeBetween = (startDateTime, endDateTime, currentDateTime) => {
 const isEventBackDated = (currentDateTime, startDateTime, endDateTime, event) => {
   return currentDateTime > startDateTime || isEventNonEditable(event);
 };
+
+const getISOString = date => new Date(convertDateToTimeZone(date).setUTCHours(0, 0, 0, 0));
 
 const getEventStatus = async event => {
   const startDateTime = getStartDateTime(event.date, event.startTime);

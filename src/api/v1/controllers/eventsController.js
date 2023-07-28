@@ -100,8 +100,9 @@ const getEvents = async (req, res) => {
     const searchKey = req.query.searchKey;
     const pageSize = req.query.pageSize;
     const pageNum = req.query.pageNum;
+    const date = req.query.date
 
-    const response = await eventsService.getEvents(searchKey, pageSize, pageNum);
+    const response = await eventsService.getEvents(searchKey, pageSize, pageNum, date);
 
     if (response.success) {
       logger.info(response?.message, {
