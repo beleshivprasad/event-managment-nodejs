@@ -10,6 +10,7 @@ const venueRoutes = require("./api/v1/routes/venueRoutes");
 const eventRoutes = require("./api/v1/routes/eventsRoutes");
 const newsTickerRoutes = require("./api/v1/routes/newsTickerRoutes");
 const siteUserRoutes = require("./api/v1/routes/siteUserRoutes");
+const selfieRoutes = require("./api/v1/routes/selfieRoutes");
 
 // import middlewares
 const authenticate = require("./api/v1/middlewares/authenticate");
@@ -41,6 +42,7 @@ router.use("/venues", authenticate, venueRoutes);
 router.use("/events", authenticate, eventRoutes);
 router.use("/news_ticker", authenticate, newsTickerRoutes);
 router.use("/site_users", authenticate, siteUserRoutes);
+router.use("/selfie_app", authenticate, selfieRoutes);
 
 // base router for apis
 app.use("/adminapi/api/v1", router);

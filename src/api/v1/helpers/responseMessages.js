@@ -227,5 +227,10 @@ module.exports = {
       incorrect: "Incorrect Password!",
       min: "Password must be 8 character long!"
     }
+  },
+  publishSelfie: {
+    success: "Selfie published successfully!",
+    failure: "Failed to publish the selfie!",
+    selfieNotProvided: "Sefie image not uploaded!"
   }
 };
