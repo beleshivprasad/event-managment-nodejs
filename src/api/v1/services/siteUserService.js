@@ -66,17 +66,7 @@ const downloadUsersData = async userType => {
   try {
     const userRepository = getUserRepository(userType);
 
-    const users = await userRepository.fetchUsers(
-      {},
-      {
-        "First Name": "$firstName",
-        "Last Name": "$lastName",
-        Email: "$email",
-        "Zip Code": "$zipCode",
-        "Image Link": "$imageURL",
-        _id: 0
-      }
-    );
+    const users = await userRepository.fetchUsers({}, getRenamedColumns(userType));
 
     return {
       success: true,
@@ -101,4 +91,35 @@ const getUserRepository = userType => {
   };
 
   return userRepositories[userType];
+};
+
+// rename columns as per user type for download feature
+const getRenamedColumns = userType => {
+  const columns = {
+    SELFIE_SITE: {
+      "First Name": "$firstName",
+      "Last Name": "$lastName",
+      Email: "$email",
+      "Zip Code": "$zipCode",
+      "Image Link": "$imageURL",
+      "Receive More Info": "$prudentialMarketingAccepted",
+      _id: 0
+    },
+    BROADWAY_SITE: {
+      Name: "$name",
+      Email: "$email",
+      "Phone Number": "$phoneNumber",
+      "Zip Code": "$zipCode",
+      "Email Marketing": "$emailMarketingOpted",
+      "Phone Marketing": "$phoneNumberMarketingOpted",
+      "Privacy Policy": "$privacyPolicyAccepted",
+      _id: 0
+    },
+    FESTIVAL_SITE: {
+      "Device IP Address": "$ip",
+      _id: 0
+    }
+  };
+
+  return columns[userType] || {};
 };
