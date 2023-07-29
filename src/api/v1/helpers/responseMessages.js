@@ -127,6 +127,10 @@ module.exports = {
       success: "User record added successfully",
       error: "Failed to add user record!"
     },
+    download: {
+      success: "User list downloaded successfully!",
+      error: "Failed to download users list!"
+    },
     fetch: {
       success: "User fetched.",
       error: "Failed to fetch users!.",

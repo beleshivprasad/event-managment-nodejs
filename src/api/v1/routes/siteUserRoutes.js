@@ -5,6 +5,7 @@ const siteUserController = require("../controllers/siteUserController");
 const createSelifeSiteUserValidation = require("../middlewares/validations/createSelifeSiteUserValidation");
 const createFestivalSiteUserValidation = require("../middlewares/validations/createFestivalSiteUserValidation");
 const createBroadwaySiteUserValidation = require("../middlewares/validations/createBroadwaySiteUserValidation");
+const downloadUsersValidation = require("../middlewares/validations/downloadUsersValidation");
 
 const router = express.Router();
 
@@ -24,5 +25,7 @@ router.post(
   createBroadwaySiteUserValidation,
   siteUserController.createBroadwaySiteUser
 );
+
+router.post("/download", downloadUsersValidation, siteUserController.downloadUsersData);
 
 module.exports = router;

@@ -62,7 +62,33 @@ const fetchSiteUsers = async userSearchDetails => {
   }
 };
 
-module.exports = { createSiteUser, fetchSiteUsers };
+const downloadUsersData = async userType => {
+  try {
+    const userRepository = getUserRepository(userType);
+
+    const users = await userRepository.fetchUsers(
+      {},
+      {
+        "First Name": "$firstName",
+        "Last Name": "$lastName",
+        Email: "$email",
+        "Zip Code": "$zipCode",
+        "Image Link": "$imageURL",
+        _id: 0
+      }
+    );
+
+    return {
+      success: true,
+      message: responseMessages.siteUsers.download.success,
+      data: { users }
+    };
+  } catch (error) {
+    return { success: false, message: error.message, error };
+  }
+};
+
+module.exports = { createSiteUser, fetchSiteUsers, downloadUsersData };
 
 // private methods
 

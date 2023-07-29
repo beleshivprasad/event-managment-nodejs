@@ -62,11 +62,34 @@ const fetchSiteUsers = async (req, res, userType) => {
   }
 };
 
+const downloadUsersData = async (req, res) => {
+  try {
+    const { userType } = req.body;
+
+    const response = await siteUserService.downloadUsersData(userType);
+
+    if (response.success) {
+      infoLog(response.message, "downloadUsersData", __filename);
+
+      return successResponse(res, response.message, response.data);
+    }
+
+    errorLog(response.message, "downloadUsersData", __filename, response?.error || {});
+
+    errorResponse(res, response?.message, response.data);
+  } catch (error) {
+    errorLog(error?.message, "downloadUsersData", __filename, error);
+
+    errorResponse(res, error?.message, error);
+  }
+};
+
 module.exports = {
   createSelfieSiteUser,
   createFestivalSiteUser,
   createBroadwaySiteUser,
   fetchSelfieSiteUsers,
   fetchFestivalSiteUsers,
-  fetchBroadwaySiteUsers
+  fetchBroadwaySiteUsers,
+  downloadUsersData
 };
