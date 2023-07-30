@@ -106,7 +106,8 @@ const getRenamedColumns = userType => {
       _id: 0
     },
     BROADWAY_SITE: {
-      Name: "$name",
+      "First Name": "$firstName",
+      "Last Name": "$lastName",
       Email: "$email",
       "Phone Number": "$phoneNumber",
       "Zip Code": "$zipCode",

@@ -5,10 +5,15 @@ const responseMessages = require("../../helpers/responseMessages");
 const { errorLog } = require("../../helpers/loggerHelper");
 
 const broadwaySiteUserSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.base": responseMessages.siteUsers.fieldValidation.name.base,
-    "string.empty": responseMessages.siteUsers.fieldValidation.name.empty,
-    "any.required": responseMessages.siteUsers.fieldValidation.name.required
+  firstName: Joi.string().required().messages({
+    "string.base": responseMessages.siteUsers.fieldValidation.firstName.base,
+    "string.empty": responseMessages.siteUsers.fieldValidation.firstName.empty,
+    "any.required": responseMessages.siteUsers.fieldValidation.firstName.required
+  }),
+  lastName: Joi.string().required().messages({
+    "string.base": responseMessages.siteUsers.fieldValidation.lastName.base,
+    "string.empty": responseMessages.siteUsers.fieldValidation.lastName.empty,
+    "any.required": responseMessages.siteUsers.fieldValidation.lastName.required
   }),
   email: Joi.string().email().required().messages({
     "string.base": responseMessages.fieldValidation.email.base,
