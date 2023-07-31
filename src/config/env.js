@@ -7,7 +7,7 @@ module.exports = {
   PORT: process.env.PORT || 5000,
   MONGODB_URI: process.env.MONGODB_URI,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || "JWT_SECRET_KEY",
-  CLIENT_BASE_URL: process.env.CLIENT_BASE_URL || "http://localhost:3000",
+  ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || ["http://localhost:3000"], // should be array of origins
   JWT_SIGN_OPTIONS: {
     expiresIn: process.env.JWT_TOKEN_EXPIRE_DURATION || "3d"
   },

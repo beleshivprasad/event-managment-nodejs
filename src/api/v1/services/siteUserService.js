@@ -8,8 +8,14 @@ const broadwaySiteUserRepository = new BroadwaySiteUserRepository();
 
 const responseMessages = require("../helpers/responseMessages");
 
+const { BROADWAY_SITE, SELFIE_SITE, FESTIVAL_SITE } = require("../../../config/constants");
+
 const createSiteUser = async (payload, userType) => {
   try {
+    const response = await validateRequest(payload, userType);
+
+    if (!response.success) return response;
+
     const userRepository = getUserRepository(userType);
 
     const user = await userRepository.createUser(payload);
@@ -123,4 +129,24 @@ const getRenamedColumns = userType => {
   };
 
   return columns[userType] || {};
+};
+
+// validate request as per user type
+const validateRequest = async (userInfo, userType) => {
+  switch (userType) {
+    case BROADWAY_SITE:
+      const userRepository = getUserRepository(userType);
+
+      const user = await userRepository.fetchSingleUser({ email: userInfo.email });
+      if (user) {
+        return {
+          success: false,
+          message: responseMessages.siteUsers.fieldValidation.email.alreadyExists
+        };
+      }
+
+      return { success: true };
+    default:
+      return { success: true };
+  }
 };

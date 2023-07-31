@@ -5,6 +5,10 @@ class BroadwaySiteUserRepository {
     return await BroadwaySiteUser.create(payload);
   }
 
+  async fetchSingleUser(options) {
+    return await BroadwaySiteUser.findOne(options);
+  }
+
   async fetchUsers(filterOptions, columns) {
     return await BroadwaySiteUser.find(filterOptions, columns);
   }

@@ -161,7 +161,8 @@ module.exports = {
       email: {
         base: "Email must be a string!",
         empty: "Email cannot be empty",
-        required: "Email is required!"
+        required: "Email is required!",
+        alreadyExists: "Email is already registered!"
       },
       phoneNumber: {
         empty: "Phone Number cannot be empty",

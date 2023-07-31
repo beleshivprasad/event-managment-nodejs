@@ -25,7 +25,7 @@ const app = express();
 const router = express.Router();
 
 // set-up cors
-app.use(cors({ origin: env.CLIENT_BASE_URL }));
+app.use(cors({ origin: env.ALLOWED_ORIGINS }));
 
 const { connectDB } = require("./api/v1/helpers/dbHelper");
 const { logger } = require("./logger");
