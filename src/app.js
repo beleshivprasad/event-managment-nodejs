@@ -17,6 +17,7 @@ const authenticate = require("./api/v1/middlewares/authenticate");
 
 // import helpers
 const unmatchedRouteHandler = require("./api/v1/helpers/unmatchedRouteHandler");
+const corsOptions = require("./api/v1/helpers/corsHelper");
 
 // creating application instance
 const app = express();
@@ -25,7 +26,7 @@ const app = express();
 const router = express.Router();
 
 // set-up cors
-app.use(cors({ origin: env.ALLOWED_ORIGINS }));
+app.use(cors(corsOptions));
 
 const { connectDB } = require("./api/v1/helpers/dbHelper");
 const { logger } = require("./logger");
