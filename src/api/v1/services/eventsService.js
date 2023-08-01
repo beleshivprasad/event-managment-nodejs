@@ -297,9 +297,7 @@ const getEndDateTime = (endDate, endTime) => {
 
 const getCurrentDateTime = () => {
   const currentDateTime = convertDateToTimeZone(new Date(), env.APP_TIME_ZONE);
-  currentDateTime.setSeconds(0);
-
-  return currentDateTime;
+  return new Date(currentDateTime.setSeconds(0));
 };
 
 const getYearMonthDayForDate = date => {
@@ -388,7 +386,7 @@ const getEventFreezeTime = () => {
   if (hours) {
     const minutes = (eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME) % 60;
     eventFreezeTime.setHours(eventFreezeTime.getHours() + hours);
-    eventFreezeTime.setMinutes(eventFreezeTime.getMinutes() + minutes);
+    eventFreezeTime.setMinutes( minutes);
   } else {
     eventFreezeTime.setMinutes(eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME);
   }

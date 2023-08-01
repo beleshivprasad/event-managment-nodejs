@@ -70,7 +70,8 @@ module.exports = {
       startTime: {
         empty: "Event start-time cannot be empty!",
         required: "Event start-time is required!",
-        alreadyElasped: "Event date and time must be in the future"
+        alreadyElasped: "Event date and time must be in the future",
+        startingSoon: "Cannot edit details as event starting soon!"
       },
       endTime: {
         empty: "Event end-time cannot be empty!",
