@@ -3,7 +3,13 @@ const VenueRepository = require("../repositories/venueRepository");
 
 const responseMessages = require("../helpers/responseMessages");
 const { convertDateToTimeZone } = require("../helpers/datetime");
-const { DONE, ONGOING, NON_EDITABLE_STATUS, INACTIVE } = require("../../../config/constants");
+const {
+  DONE,
+  ONGOING,
+  NON_EDITABLE_STATUS,
+  INACTIVE,
+  EVENT_FREEZE_TIME
+} = require("../../../config/constants");
 const env = require("../../../config/env");
 
 const eventRepository = new EventRepository();
@@ -59,6 +65,15 @@ const updateEvent = async (eventID, eventDetails) => {
 
     if (!event) {
       return { success: false, message: responseMessages.event.common.doesNotExists };
+    }
+
+    // validate if event is in the EVENT_FREEZE_TIME before the event time.
+    const eventFreezeTime = getEventFreezeTime();
+    if (eventFreezeTime >= event.startDateTime) {
+      return {
+        success: false,
+        message: responseMessages.event.fieldValidation.startTime.startingSoon
+      };
     }
 
     // validate if event is editable based on status
@@ -364,4 +379,18 @@ const doesVenueExists = async venueID => {
   } catch (error) {
     return { success: false, message: error?.message, error };
   }
+};
+
+// get event freeze time
+const getEventFreezeTime = () => {
+  const eventFreezeTime = getCurrentDateTime();
+  const hours = Math.floor((eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME) / 60);
+  if (hours) {
+    const minutes = (eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME) % 60;
+    eventFreezeTime.setHours(eventFreezeTime.getHours() + hours);
+    eventFreezeTime.setMinutes(eventFreezeTime.getMinutes() + minutes);
+  } else {
+    eventFreezeTime.setMinutes(eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME);
+  }
+  return eventFreezeTime;
 };
