@@ -14,7 +14,7 @@ class SelfieSiteUserRepository {
   }
 
   async fetchTotalUserCount() {
-    return await SelfieSiteUser.find().count();
+    return await SelfieSiteUser.count();
   }
 }
 

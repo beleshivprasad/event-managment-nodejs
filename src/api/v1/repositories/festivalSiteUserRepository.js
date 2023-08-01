@@ -14,7 +14,7 @@ class FestivalSiteUserRepository {
   }
 
   async fetchTotalUserCount() {
-    return await FestivalSiteUser.find().count();
+    return await FestivalSiteUser.count();
   }
 }
 

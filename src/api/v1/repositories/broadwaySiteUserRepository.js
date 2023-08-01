@@ -18,7 +18,7 @@ class BroadwaySiteUserRepository {
   }
 
   async fetchTotalUserCount() {
-    return await BroadwaySiteUser.find().count();
+    return await BroadwaySiteUser.count();
   }
 }
 

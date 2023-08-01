@@ -23,7 +23,7 @@ const uploadToDrive = async (file, email) => {
         body: bufferStream
       },
       requestBody: {
-        name: `${new Date().toLocaleDateString()}_${new Date().toLocaleTimeString()}_${Date.now()}`,
+        name: file.originalname,
         parents: [`${process.env.REACT_APP_GOOGLE_DRIVE_ID}`]
       },
       fields: DATA_FIELDS
