@@ -24,7 +24,7 @@ const uploadToDrive = async (file, email) => {
       },
       requestBody: {
         name: file.originalname,
-        parents: [`${process.env.REACT_APP_GOOGLE_DRIVE_ID}`]
+        parents: [`${process.env.SES_GOOGLE_DRIVE_ID}`]
       },
       fields: DATA_FIELDS
     });

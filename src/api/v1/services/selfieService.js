@@ -1,4 +1,4 @@
-const { uploadToDrive } = require("../lib/uploadToGoogleDrive");
+const uploadToDrive = require("../lib/uploadToBoxDrive");
 
 const { sendEmail } = require("../helpers/mailHelper");
 const responseMessages = require("../helpers/responseMessages");
@@ -9,7 +9,7 @@ const publishImageOnBillboard = async (file, payload) => {
   try {
     const { email, name } = payload;
 
-    await uploadToDrive(file, email);
+    await uploadToDrive(file);
 
     await sendEmail(PUBLISH_IMAGE_TO_BILLBOARD, { email, name });
 

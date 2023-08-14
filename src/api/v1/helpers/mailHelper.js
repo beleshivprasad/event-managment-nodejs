@@ -5,16 +5,16 @@ const { PUBLISH_IMAGE_TO_BILLBOARD } = require("../../../config/constants");
 
 // nodemailer options
 const transportOptions = {
-  host: process.env.REACT_APP_MAIL_SERVICE_HOST,
-  port: process.env.REACT_APP_MAIL_SERVICE_PORT,
-  secure: +process.env.REACT_APP_MAIL_SERVICE_PORT === 465, // true for 465, false for other ports
+  host: process.env.SES_MAIL_SERVICE_HOST,
+  port: process.env.SES_MAIL_SERVICE_PORT,
+  secure: +process.env.SES_MAIL_SERVICE_PORT === 465, // true for 465, false for other ports
   auth: {
-    user: process.env.REACT_APP_MAIL_SERVICE_USER,
-    pass: process.env.REACT_APP_MAIL_SERVICE_PASS
+    user: process.env.SES_MAIL_SERVICE_USER,
+    pass: process.env.SES_MAIL_SERVICE_PASS
   },
   secureConnection: true,
   tls: {
-    ciphers: process.env.REACT_APP_MAIL_SERVICE_TLS_CIPHERS
+    ciphers: process.env.SES_MAIL_SERVICE_TLS_CIPHERS
   }
 };
 
@@ -26,7 +26,7 @@ const getMailOptionsByTemplateName = (templateName, emailInfo) => {
   switch (templateName) {
     case PUBLISH_IMAGE_TO_BILLBOARD:
       return {
-        from: process.env.REACT_APP_MAIL_SERVICE_SENDER_ADDRESS,
+        from: process.env.SES_MAIL_SERVICE_SENDER_ADDRESS,
         to: "shivprasad.bele@joshsoftware.com" || emailInfo.email,
         subject: "You Are Starring On Time Square Billboard",
         html: `
