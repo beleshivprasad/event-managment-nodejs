@@ -25,16 +25,16 @@ const broadwaySiteUserSchema = Joi.object({
     "string.empty": responseMessages.siteUsers.fieldValidation.zipCode.empty,
     "any.required": responseMessages.siteUsers.fieldValidation.zipCode.required
   }),
-  phoneNumber: Joi.string().required().messages({
-    "string.empty": responseMessages.siteUsers.fieldValidation.phoneNumber.empty,
-    "any.required": responseMessages.siteUsers.fieldValidation.phoneNumber.required
-  }),
+  // phoneNumber: Joi.string().required().messages({
+  //   "string.empty": responseMessages.siteUsers.fieldValidation.phoneNumber.empty,
+  //   "any.required": responseMessages.siteUsers.fieldValidation.phoneNumber.required
+  // }),
   emailMarketingOpted: Joi.string().valid(true, false).messages({
     "any.only": responseMessages.siteUsers.fieldValidation.common.invalid
   }),
-  phoneNumberMarketingOpted: Joi.string().valid(true, false).messages({
-    "any.only": responseMessages.siteUsers.fieldValidation.common.invalid
-  }),
+  // phoneNumberMarketingOpted: Joi.string().valid(true, false).messages({
+  //   "any.only": responseMessages.siteUsers.fieldValidation.common.invalid
+  // }),
   privacyPolicyAccepted: Joi.string().valid(true, false).messages({
     "any.only": responseMessages.siteUsers.fieldValidation.common.invalid
   })

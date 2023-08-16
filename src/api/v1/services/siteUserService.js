@@ -115,10 +115,10 @@ const getRenamedColumns = userType => {
       "First Name": "$firstName",
       "Last Name": "$lastName",
       Email: "$email",
-      "Phone Number": "$phoneNumber",
+      // "Phone Number": "$phoneNumber",
       "Zip Code": "$zipCode",
       "Email Marketing": "$emailMarketingOpted",
-      "Phone Marketing": "$phoneNumberMarketingOpted",
+      // "Phone Marketing": "$phoneNumberMarketingOpted",
       "Privacy Policy": "$privacyPolicyAccepted",
       _id: 0
     },

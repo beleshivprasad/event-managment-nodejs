@@ -14,10 +14,10 @@ const broadwaySiteUserSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    phoneNumber: {
-      type: String,
-      required: true
-    },
+    // phoneNumber: {
+    //   type: String,
+    //   required: true
+    // },
     zipCode: {
       type: String,
       required: true
@@ -26,10 +26,10 @@ const broadwaySiteUserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    phoneNumberMarketingOpted: {
-      type: Boolean,
-      default: false
-    },
+    // phoneNumberMarketingOpted: {
+    //   type: Boolean,
+    //   default: false
+    // },
     privacyPolicyAccepted: {
       type: Boolean,
       default: false
