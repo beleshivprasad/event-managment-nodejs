@@ -27,6 +27,8 @@ const PUBLISH_IMAGE_TO_BILLBOARD = "PUBLISH_IMAGE_TO_BILLBOARD";
 const KEY_FILE_PATH = path.join(__dirname, "./../../credentials.json");
 const SCOPES = ["https://www.googleapis.com/auth/drive"];
 const DATA_FIELDS = "id,name";
+const EVENT_DEFAULT_FLOW = "DEFAULT_FLOW";
+const EVENT_BILLBOARD_FLOW = "BILLBOARD_FLOW";
 
 module.exports = {
   MINIMUM_EVENT_DURATION,
@@ -44,5 +46,7 @@ module.exports = {
   KEY_FILE_PATH,
   SCOPES,
   DATA_FIELDS,
-  EVENT_FREEZE_TIME
+  EVENT_FREEZE_TIME,
+  EVENT_DEFAULT_FLOW,
+  EVENT_BILLBOARD_FLOW
 };

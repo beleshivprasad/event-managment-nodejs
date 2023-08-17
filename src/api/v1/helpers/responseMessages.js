@@ -238,5 +238,9 @@ module.exports = {
     success: "Selfie published successfully!",
     failure: "Failed to publish the selfie!",
     selfieNotProvided: "Sefie image not uploaded!"
+  },
+  eventFlow: {
+    success: "Event Flow Fetch Successfully!",
+    failure: "Event Flow Fetch failed!"
   }
-};
+}

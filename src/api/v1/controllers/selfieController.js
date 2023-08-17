@@ -34,4 +34,26 @@ const publishImageOnBillboard = async (req, res) => {
   }
 };
 
-module.exports = { publishImageOnBillboard };
+const getEventFlow = async (req, res) => {
+  try {
+    const response = await selfieService.eventFlowService(req, res);
+
+    if (response.success) {
+      infoLog(response.message, "getEventFlow", __filename);
+
+      return successResponse(res, response?.message, response.data);
+    }
+
+    errorLog(response.message, "getEventFlow", __filename, response?.error || {});
+
+    return errorResponse(res, response?.message, response.error);
+
+  } catch (error) {
+    errorLog(error?.message, "getEventFlow", __filename, error);
+
+    errorResponse(res, error?.message || responseMessages.eventFlow.failure, error);
+  }
+}
+
+
+module.exports = { publishImageOnBillboard, getEventFlow };

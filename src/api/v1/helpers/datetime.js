@@ -1,4 +1,4 @@
-const convertDateToTimeZone = (inputDate, targetTimeZone = "Asia/Kolkata") => {
+const convertDateToTimeZone = (inputDate, targetTimeZone = "America/New_York") => {
   // Create an instance of the Intl.DateTimeFormat with the target time zone
   const formatter = new Intl.DateTimeFormat(undefined, {
     timeZone: targetTimeZone,

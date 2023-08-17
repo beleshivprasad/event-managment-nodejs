@@ -13,5 +13,5 @@ router.post(
   publishImageValidation,
   selfieController.publishImageOnBillboard
 );
-
+router.get("/event_flow", selfieController.getEventFlow);
 module.exports = router;
