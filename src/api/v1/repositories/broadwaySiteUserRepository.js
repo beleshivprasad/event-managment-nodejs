@@ -10,11 +10,11 @@ class BroadwaySiteUserRepository {
   }
 
   async fetchUsers(filterOptions, columns) {
-    return await BroadwaySiteUser.find(filterOptions, columns);
+    return await BroadwaySiteUser.find(filterOptions, columns).sort({ createdAt: -1 });
   }
 
   async fetchPaginatedUsers(filterOptions, skipCount, limitCount, columns) {
-    return await BroadwaySiteUser.find(filterOptions, columns).skip(skipCount).limit(limitCount);
+    return await BroadwaySiteUser.find(filterOptions, columns).sort({ createdAt: -1 }).skip(skipCount).limit(limitCount);
   }
 
   async fetchTotalUserCount() {
