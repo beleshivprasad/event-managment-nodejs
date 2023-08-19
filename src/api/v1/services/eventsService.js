@@ -8,7 +8,8 @@ const {
   ONGOING,
   NON_EDITABLE_STATUS,
   INACTIVE,
-  EVENT_FREEZE_TIME
+  EVENT_FREEZE_TIME,
+  ONE_DAY_TO_MILISECONDS
 } = require("../../../config/constants");
 const env = require("../../../config/env");
 
@@ -137,7 +138,12 @@ const getEvents = async (searchKey, pageSize = 10, pageNum = 1, date) => {
       ...(searchKey && {
         name: { $regex: searchKey, $options: "i" }
       }),
-      ...(date && { date: getISOString(new Date(date)) })
+      ...(date && {
+        date: {
+          $gte: new Date(date),
+          $lte: new Date(new Date(date).getTime() + ONE_DAY_TO_MILISECONDS)
+        }
+      })
     };
     const populateOptions = { path: "venueID", select: "name", strictPopulate: false };
 
@@ -386,7 +392,7 @@ const getEventFreezeTime = () => {
   if (hours) {
     const minutes = (eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME) % 60;
     eventFreezeTime.setHours(eventFreezeTime.getHours() + hours);
-    eventFreezeTime.setMinutes( minutes);
+    eventFreezeTime.setMinutes(minutes);
   } else {
     eventFreezeTime.setMinutes(eventFreezeTime.getMinutes() + EVENT_FREEZE_TIME);
   }
