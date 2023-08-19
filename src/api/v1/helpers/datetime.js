@@ -1,7 +1,7 @@
 const convertDateToTimeZone = (inputDate, targetTimeZone = "America/New_York") => {
   // Create an instance of the Intl.DateTimeFormat with the target time zone
   const formatter = new Intl.DateTimeFormat(undefined, {
-    timeZone: targetTimeZone,
+    // timeZone: targetTimeZone,
     hour12: false, // Use 24-hour format
     year: "numeric",
     month: "short",
